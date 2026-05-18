@@ -34,14 +34,14 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             ->profile(\App\Filament\Pages\Auth\EditProfile::class, isSimple: false)
+            ->brandName('Portofolio Zefhana')
             ->defaultThemeMode(ThemeMode::Light)
             ->font('Montserrat')
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Indigo,
             ])
             ->maxContentWidth(MaxWidth::SevenExtraLarge)
             ->sidebarCollapsibleOnDesktop()
-            ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
                 Pages\Dashboard::class,
@@ -50,10 +50,17 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
                 \Awcodes\Overlook\Widgets\OverlookWidget::class,
+                \App\Filament\Admin\Widgets\StatsOverviewWidget::class,
+                \App\Filament\Admin\Widgets\ProjectsTableWidget::class,
+                \App\Filament\Admin\Widgets\RecentMessagesWidget::class,
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('Administration'),
+                    ->label('Management')
+                    ->icon('heroicon-m-cog-6-tooth'),
+                NavigationGroup::make()
+                    ->label('Administration')
+                    ->icon('heroicon-m-shield-check'),
             ])
             ->userMenuItems([
                 'profile' => MenuItem::make()
@@ -107,6 +114,9 @@ class AdminPanelProvider extends PanelProvider
                     ->shouldShowAvatarForm(),
             ])
             ->resources([
+                \App\Filament\Admin\Resources\UserResource::class,
+                \App\Filament\Admin\Resources\ProjectResource::class,
+                \App\Filament\Admin\Resources\ContactMessageResource::class,
                 config('filament-logger.activity_resource'),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
