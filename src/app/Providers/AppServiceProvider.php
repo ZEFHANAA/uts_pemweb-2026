@@ -42,5 +42,16 @@ class AppServiceProvider extends ServiceProvider
         MountableAction::configureUsing(function (MountableAction $action) {
             $action->modalFooterActionsAlignment(Alignment::Right);
         });
+
+        // Share profile settings globally with all views safely
+        $globalProfile = null;
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('profile_settings')) {
+                $globalProfile = \App\Models\ProfileSetting::first();
+            }
+        } catch (\Exception $e) {
+            // Silence exceptions during migration or console commands
+        }
+        \Illuminate\Support\Facades\View::share('globalProfile', $globalProfile);
     }
 }

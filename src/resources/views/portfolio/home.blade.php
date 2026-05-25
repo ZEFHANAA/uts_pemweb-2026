@@ -28,12 +28,12 @@
 
                 <h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-6">
                     Hi, I'm<br>
-                    <span class="text-gradient">Zefhana Ananda</span><br>
-                    <span class="text-3xl md:text-4xl font-bold text-slate-300">Full-Stack Developer</span>
+                    <span class="text-gradient">{{ $profile->name ?? 'Zefhana Ananda' }}</span><br>
+                    <span class="text-3xl md:text-4xl font-bold text-slate-300">{{ $profile->title ?? 'Full-Stack Developer' }}</span>
                 </h1>
 
                 <p class="text-lg text-slate-400 leading-relaxed mb-8 max-w-lg">
-                    Saya membangun aplikasi web yang skalabel, modern, dan berkesan — dari backend yang robust hingga UI yang elegan.
+                    {{ $profile->sub_title ?? 'Saya membangun aplikasi web yang skalabel, modern, dan berkesan — dari backend yang robust hingga UI yang elegan.' }}
                 </p>
 
                 <div class="flex flex-wrap gap-4">
@@ -49,15 +49,15 @@
 
                 <div class="flex gap-8 mt-12 pt-8 border-t border-white/10">
                     <div>
-                        <div class="text-3xl font-black text-white">6+</div>
+                        <div class="text-3xl font-black text-white">{{ $projectCount }}+</div>
                         <div class="text-slate-500 text-sm">Projects</div>
                     </div>
                     <div>
-                        <div class="text-3xl font-black text-white">2+</div>
+                        <div class="text-3xl font-black text-white">{{ $profile->years_of_experience_offset ?? 2 }}+</div>
                         <div class="text-slate-500 text-sm">Tahun Belajar</div>
                     </div>
                     <div>
-                        <div class="text-3xl font-black text-white">10+</div>
+                        <div class="text-3xl font-black text-white">{{ $techStackCount }}+</div>
                         <div class="text-slate-500 text-sm">Tech Stack</div>
                     </div>
                 </div>
@@ -72,11 +72,15 @@
                     <div class="relative w-80 h-80 rounded-3xl glass overflow-hidden flex items-center justify-center float-animation"
                          style="background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(168,85,247,.2))">
                         <div class="text-center">
-                            <div class="w-28 h-28 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 mx-auto mb-4 flex items-center justify-center text-white text-4xl font-black shadow-xl">
-                                ZA
-                            </div>
-                            <p class="text-white font-bold text-lg">Zefhana Ananda</p>
-                            <p class="text-slate-300 text-sm mt-1">Laravel · Vue · MySQL</p>
+                            @if($profile && $profile->avatar_path)
+                                <img src="{{ asset('storage/' . $profile->avatar_path) }}" alt="{{ $profile->name }}" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover shadow-xl">
+                            @else
+                                <div class="w-28 h-28 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 mx-auto mb-4 flex items-center justify-center text-white text-4xl font-black shadow-xl">
+                                    {{ $profile ? collect(explode(' ', $profile->name))->map(fn($n) => $n[0])->take(2)->implode('') : 'ZA' }}
+                                </div>
+                            @endif
+                            <p class="text-white font-bold text-lg">{{ $profile->name ?? 'Zefhana Ananda' }}</p>
+                            <p class="text-slate-300 text-sm mt-1">{{ $profile->title ?? 'Full-Stack Developer' }}</p>
                         </div>
                     </div>
 
@@ -107,37 +111,25 @@
             <div>
                 <div class="reveal">
                     <span class="text-indigo-600 font-semibold text-sm uppercase tracking-widest">About Me</span>
-                    <h2 class="section-title mt-2">Tentang Zefhana</h2>
+                    <h2 class="section-title mt-2">Tentang {{ $profile ? explode(' ', $profile->name)[0] : 'Zefhana' }}</h2>
                 </div>
-                <div class="reveal reveal-delay-1 space-y-4 text-slate-600 leading-relaxed">
-                    <p>
-                        Saya <strong class="text-slate-900">Zefhana Ananda</strong>, seorang mahasiswa yang sedang menempuh pendidikan dan passionate dalam dunia <strong class="text-slate-900">Full-Stack Web Development</strong>. Saya memiliki keahlian dalam membangun aplikasi web yang skalabel, modern, dan berdampak.
-                    </p>
-                    <p>
-                        Dengan menguasai berbagai teknologi mulai dari backend (Laravel/PHP) hingga frontend (Vue.js, Tailwind CSS), saya menghadirkan solusi digital yang tidak hanya fungsional, tetapi juga indah secara visual.
-                    </p>
+                <div class="reveal reveal-delay-1 space-y-4 text-slate-600 leading-relaxed html-content">
+                    {!! $profile->about_me ?? '' !!}
                 </div>
 
                 {{-- Experience timeline --}}
                 <div class="reveal reveal-delay-2 mt-8 space-y-4">
-                    @php
-                    $experiences = [
-                        ['year' => '2026', 'title' => 'Final Project / Tugas Akhir', 'desc' => 'Membangun aplikasi web portofolio dengan Laravel & Filament', 'color' => 'indigo'],
-                        ['year' => '2025', 'title' => 'Web Development Projects', 'desc' => 'Pengembangan berbagai proyek web menggunakan Laravel', 'color' => 'purple'],
-                        ['year' => '2024', 'title' => 'Belajar Programming', 'desc' => 'Mulai belajar PHP, Laravel, dan teknologi web modern', 'color' => 'pink'],
-                    ];
-                    @endphp
                     @foreach($experiences as $exp)
                     <div class="flex gap-4">
                         <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 rounded-full bg-{{ $exp['color'] }}-100 text-{{ $exp['color'] }}-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
-                                {{ $exp['year'] }}
+                            <div class="w-10 h-10 rounded-full bg-{{ $exp->color }}-100 text-{{ $exp->color }}-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                                {{ $exp->year }}
                             </div>
                             @if(!$loop->last)<div class="w-0.5 h-full bg-slate-100 mt-2"></div>@endif
                         </div>
                         <div class="pb-6">
-                            <h4 class="font-semibold text-slate-900">{{ $exp['title'] }}</h4>
-                            <p class="text-sm text-slate-500 mt-1">{{ $exp['desc'] }}</p>
+                            <h4 class="font-semibold text-slate-900">{{ $exp->title }}</h4>
+                            <p class="text-sm text-slate-500 mt-1">{{ $exp->description }}</p>
                         </div>
                     </div>
                     @endforeach
@@ -151,52 +143,9 @@
                     <h2 class="section-title mt-2">Keahlian</h2>
                 </div>
 
-                @php
-                $skillGroups = [
-                    [
-                        'icon' => '⚙️',
-                        'title' => 'Backend',
-                        'color' => 'indigo',
-                        'skills' => [
-                            ['name' => 'Laravel / PHP', 'level' => 90],
-                            ['name' => 'Node.js', 'level' => 70],
-                            ['name' => 'RESTful API', 'level' => 85],
-                        ]
-                    ],
-                    [
-                        'icon' => '🎨',
-                        'title' => 'Frontend',
-                        'color' => 'purple',
-                        'skills' => [
-                            ['name' => 'Vue.js / React', 'level' => 75],
-                            ['name' => 'Tailwind CSS', 'level' => 90],
-                            ['name' => 'JavaScript', 'level' => 80],
-                        ]
-                    ],
-                    [
-                        'icon' => '🗄️',
-                        'title' => 'Database',
-                        'color' => 'emerald',
-                        'skills' => [
-                            ['name' => 'MySQL / MariaDB', 'level' => 85],
-                            ['name' => 'PostgreSQL', 'level' => 65],
-                        ]
-                    ],
-                    [
-                        'icon' => '🔧',
-                        'title' => 'DevOps & Tools',
-                        'color' => 'orange',
-                        'skills' => [
-                            ['name' => 'Docker', 'level' => 75],
-                            ['name' => 'Git / GitHub', 'level' => 88],
-                            ['name' => 'Linux', 'level' => 70],
-                        ]
-                    ],
-                ];
-                @endphp
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                     @foreach($skillGroups as $i => $group)
+                    @if($group['skills']->count() > 0)
                     <div class="reveal reveal-delay-{{ $i + 1 }} bg-slate-50 rounded-2xl p-5 border border-slate-100 hover:border-{{ $group['color'] }}-200 hover:bg-{{ $group['color'] }}-50/50 transition-all duration-300">
                         <div class="flex items-center gap-2 mb-4">
                             <span class="text-xl">{{ $group['icon'] }}</span>
@@ -206,26 +155,29 @@
                             @foreach($group['skills'] as $skill)
                             <div>
                                 <div class="flex justify-between text-sm mb-1.5">
-                                    <span class="text-slate-700 font-medium">{{ $skill['name'] }}</span>
-                                    <span class="text-slate-400">{{ $skill['level'] }}%</span>
+                                    <span class="text-slate-700 font-medium">{{ $skill->name }}</span>
+                                    <span class="text-slate-400">{{ $skill->level }}%</span>
                                 </div>
                                 <div class="h-1.5 bg-slate-200 rounded-full overflow-hidden">
                                     <div class="h-full bg-gradient-to-r from-{{ $group['color'] }}-500 to-{{ $group['color'] }}-400 rounded-full"
-                                         style="width: {{ $skill['level'] }}%; transition: width 1s ease;"></div>
+                                         style="width: {{ $skill->level }}%; transition: width 1s ease;"></div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
                     </div>
+                    @endif
                     @endforeach
                 </div>
 
                 {{-- Tech tags --}}
+                @if($skills->count() > 0)
                 <div class="reveal mt-6 flex flex-wrap gap-2">
-                    @foreach(['Filament', 'Livewire', 'Vite', 'Docker', 'Nginx', 'MariaDB', 'JWT', 'REST API', 'Git'] as $tag)
+                    @foreach($skills->pluck('name') as $tag)
                     <span class="bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-indigo-100 hover:text-indigo-700 transition-colors cursor-default">{{ $tag }}</span>
                     @endforeach
                 </div>
+                @endif
             </div>
         </div>
     </div>

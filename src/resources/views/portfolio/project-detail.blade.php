@@ -230,10 +230,6 @@
         </div>
 
         {{-- ===== RELATED PROJECTS ===== --}}
-        @php
-        $relatedProjects = \App\Models\Project::where('id', '!=', $project->id)
-            ->ordered()->limit(3)->get();
-        @endphp
 
         @if($relatedProjects->count() > 0)
         <div class="mt-20">
