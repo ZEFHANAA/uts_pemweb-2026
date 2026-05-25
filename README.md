@@ -22,12 +22,13 @@
 
 ## 🎯 Deskripsi Project
 
-Website portofolio full-stack yang dibangun sebagai project UTS Pemrograman Web. Menampilkan:
-- ✅ **Halaman Home/About** — Profil, bio, dan skill stack
-- ✅ **Halaman Projects** — Daftar project dengan progress tracking
-- ✅ **Halaman Contact** — Form kontak dinamis yang tersimpan ke database
-- ✅ **Admin Panel** — CRUD project, kelola pesan, upload gambar
+Website portofolio **full-stack dinamis** yang dibangun sebagai project UTS Pemrograman Web. Seluruh konten dikelola melalui database dan dapat diubah melalui Admin Panel tanpa menyentuh kode. Menampilkan:
+- ✅ **Halaman Home/About** — Profil, bio, skill, dan timeline pengalaman (dinamis dari database)
+- ✅ **Halaman Projects** — Daftar project dengan detail dan progress tracking (dinamis dari database)
+- ✅ **Halaman Contact** — Form kontak yang tersimpan ke database + FAQ dinamis
+- ✅ **Admin Panel** — CRUD lengkap untuk semua konten (profil, skill, pengalaman, project, FAQ, pesan)
 - ✅ **Arsitektur MVC** — Menggunakan Laravel 12 sebagai framework utama
+- ✅ **Sepenuhnya Dinamis** — Tidak ada konten hardcoded, semua data dari database
 
 ---
 
@@ -98,11 +99,19 @@ uts_pemweb/
     │   │   └── ContactController.php
     │   ├── Models/
     │   │   ├── Project.php
-    │   │   └── ContactMessage.php
+    │   │   ├── ContactMessage.php
+    │   │   ├── ProfileSetting.php
+    │   │   ├── Skill.php
+    │   │   ├── Experience.php
+    │   │   └── Faq.php
     │   └── Filament/Admin/
     │       ├── Resources/
     │       │   ├── ProjectResource.php
-    │       │   └── ContactMessageResource.php
+    │       │   ├── ContactMessageResource.php
+    │       │   ├── ProfileSettingResource.php
+    │       │   ├── SkillResource.php
+    │       │   ├── ExperienceResource.php
+    │       │   └── FaqResource.php
     │       └── Widgets/
     │           ├── StatsOverviewWidget.php
     │           ├── ProjectsTableWidget.php
@@ -111,7 +120,11 @@ uts_pemweb/
     │   ├── migrations/
     │   └── seeders/
     │       ├── ProjectSeeder.php
-    │       └── UserSeeder.php
+    │       ├── UserSeeder.php
+    │       ├── ProfileSettingSeeder.php
+    │       ├── SkillSeeder.php
+    │       ├── ExperienceSeeder.php
+    │       └── FaqSeeder.php
     ├── resources/views/
     │   ├── layouts/app.blade.php
     │   └── portfolio/
@@ -127,10 +140,11 @@ uts_pemweb/
 ## 📊 Arsitektur MVC
 
 ```
-Model      → Project, ContactMessage, User
+Model      → Project, ContactMessage, ProfileSetting, Skill, Experience, Faq, User
 View       → Blade templates (layouts + portfolio)
 Controller → PortfolioController, ContactController
-Admin      → Filament Resources (ProjectResource, ContactMessageResource)
+Admin      → Filament Resources (ProjectResource, ContactMessageResource,
+             ProfileSettingResource, SkillResource, ExperienceResource, FaqResource)
 ```
 
 ---
