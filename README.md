@@ -38,9 +38,11 @@ Website portofolio **full-stack dinamis** yang dibangun sebagai project UTS Pemr
 |-------|-----------|
 | Backend | Laravel 12, PHP 8.2 |
 | Frontend | Blade, Tailwind CSS, Vite |
-| Admin | Filament v3 |
+| Admin & Interactivity | Filament v3, **Livewire**, **Alpine.js** |
 | Database | MariaDB 10.11 |
 | Server | Nginx, Docker |
+
+> **Note:** Penggunaan **Livewire** dan **Alpine.js** terintegrasi secara mendalam (*under the hood*) melalui penggunaan Filament v3 untuk memberikan reaktivitas tinggi pada admin panel tanpa harus menulis banyak kode JavaScript manual.
 
 ---
 
@@ -173,5 +175,22 @@ FILESYSTEM_DISK=public
 
 ---
 
+## 🤝 Panduan Kontribusi (Contributing)
+
+Meskipun ini adalah project UTS individu, kontribusi atau saran perbaikan (berupa Issue atau Pull Request) sangat dipersilakan:
+1. Fork repository ini.
+2. Buat branch fitur Anda (`git checkout -b fitur-baru`).
+3. Commit perubahan Anda (`git commit -m 'Menambahkan fitur baru'`).
+4. Push ke branch (`git push origin fitur-baru`).
+5. Buka Pull Request.
+
+---
+
+## 📄 Lisensi
+
+Project ini dilisensikan di bawah **MIT License**. Anda bebas menggunakan, memodifikasi, dan mendistribusikan kode ini untuk keperluan edukasi maupun komersial.
+
+---
+
 **Status**: ✅ Selesai & Tested  
-**Last Updated**: Mei 2026
+**Last Updated**: Juni 2026
