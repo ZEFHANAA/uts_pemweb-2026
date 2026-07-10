@@ -49,6 +49,8 @@ RUN echo '#!/bin/bash\n/usr/local/bin/php /var/www/html/artisan "$@"' > /usr/bin
     echo '#!/bin/bash\n/usr/local/bin/php /var/www/html/artisan config:clear\n/usr/local/bin/php /var/www/html/artisan dusk -d memory_limit=2G --stop-on-error --stop-on-failure --testdox-text=tests/report-dusk.txt "$@"' > /usr/bin/d && \
     chmod +x /usr/bin/d
 
+ADD ./www.conf /usr/local/etc/php-fpm.d/www.conf
+
 # Copy entrypoint script
 COPY ./docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \

@@ -23,8 +23,8 @@ APP_ENV=local
 APP_KEY=base64:REDACTED_APP_KEY=
 APP_DEBUG=true
 APP_TIMEZONE='Asia/Jakarta'
-APP_URL="https://${PROJECT_NAME}.test"
-ASSET_URL="https://${PROJECT_NAME}.test"
+APP_URL="https://profile.petawisata.my.id"
+ASSET_URL="https://profile.petawisata.my.id"
 DEBUGBAR_ENABLED=false
 ASSET_PREFIX=
 # ASSET_PREFIX=/dev/kit/public example in case deployed inside a folder
@@ -52,7 +52,7 @@ DB_DATABASE="${PROJECT_NAME}"
 DB_USERNAME=root
 DB_PASSWORD=p455w0rd
 
-SESSION_DRIVER=database
+SESSION_DRIVER=file
 SESSION_LIFETIME=120
 SESSION_ENCRYPT=true
 SESSION_PATH=/
@@ -62,7 +62,7 @@ BROADCAST_CONNECTION=log
 FILESYSTEM_DISK=local
 QUEUE_CONNECTION=database
 
-CACHE_STORE=database
+CACHE_STORE=file
 # CACHE_PREFIX=
 
 MEMCACHED_HOST=127.0.0.1
@@ -99,8 +99,8 @@ APP_ENV=local
 APP_KEY=base64:REDACTED_APP_KEY=
 APP_DEBUG=true
 APP_TIMEZONE='Asia/Jakarta'
-APP_URL="https://${PROJECT_NAME}.test"
-ASSET_URL="https://${PROJECT_NAME}.test"
+APP_URL="https://profile.petawisata.my.id"
+ASSET_URL="https://profile.petawisata.my.id"
 DEBUGBAR_ENABLED=false
 ASSET_PREFIX=
 # ASSET_PREFIX=/dev/kit/public example in case deployed inside a folder
@@ -128,7 +128,7 @@ DB_DATABASE="${PROJECT_NAME}"
 DB_USERNAME=root
 DB_PASSWORD=p455w0rd
 
-SESSION_DRIVER=database
+SESSION_DRIVER=file
 SESSION_LIFETIME=120
 SESSION_ENCRYPT=true
 SESSION_PATH=/
@@ -138,7 +138,7 @@ BROADCAST_CONNECTION=log
 FILESYSTEM_DISK=local
 QUEUE_CONNECTION=database
 
-CACHE_STORE=database
+CACHE_STORE=file
 # CACHE_PREFIX=
 
 MEMCACHED_HOST=127.0.0.1

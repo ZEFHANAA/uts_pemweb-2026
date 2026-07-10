@@ -1,308 +1,230 @@
 @extends('layouts.app')
 
-@section('title', 'Home & About')
-@section('meta_description', 'Portofolio profesional Zefhana Ananda — Full-Stack Developer. Laravel, Vue.js, Tailwind CSS dan teknologi web modern.')
+@section('title', 'Beranda')
+@section('meta_description', 'Zefhana Ananda — mahasiswa Teknik Informatika, Full-Stack Developer. Proyek Laravel, PHP, Tailwind CSS, dan MariaDB.')
 
 @section('content')
+@php
+    $name = $profile->name ?? 'Zefhana Ananda';
+    $firstName = explode(' ', $name)[0];
+    $title = $profile->title ?? 'Full-Stack Developer';
+    $statusConfig = [
+        'completed'   => ['label' => 'Selesai', 'class' => 'text-emerald-400'],
+        'in-progress' => ['label' => 'Sedang dikerjakan', 'class' => 'text-blue-400'],
+        'planning'    => ['label' => 'Perencanaan', 'class' => 'text-amber-400'],
+        'on-hold'     => ['label' => 'Ditunda', 'class' => 'text-red-400'],
+    ];
+@endphp
 
-{{-- ===== HERO SECTION ===== --}}
-<section class="relative min-h-screen flex items-center overflow-hidden bg-slate-900">
-    {{-- Background gradient blobs --}}
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-40 -right-40 w-96 h-96 bg-indigo-600/30 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/2 -left-40 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 right-1/3 w-64 h-64 bg-pink-600/20 rounded-full blur-3xl"></div>
-        {{-- Grid pattern --}}
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-slate-950"></div>
-        <div class="absolute inset-0" style="background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:32px 32px;"></div>
-    </div>
+{{-- HERO --}}
+<section class="relative flex items-center pt-28 pb-16 overflow-hidden lg:min-h-screen">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,.15),transparent_42%),radial-gradient(circle_at_82%_18%,rgba(255,255,255,.04),transparent_32%)] pointer-events-none"></div>
+    <div class="relative w-full max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.18fr)_360px] gap-10 lg:gap-14 items-center">
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {{-- Left: Text --}}
-            <div class="animate-fade-up">
-                <div class="inline-flex items-center gap-2 bg-indigo-600/20 border border-indigo-500/30 text-indigo-300 text-sm font-medium px-4 py-2 rounded-full mb-6">
-                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-                    Available for projects
-                </div>
+            <div class="flex flex-col items-start animate-fade-in-up">
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-white/55">
+                    <span class="relative flex h-1.5 w-1.5">
+                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70"></span>
+                        <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                    </span>
+                    Tersedia untuk proyek baru
+                </span>
 
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-6">
-                    Hi, I'm<br>
-                    <span class="text-gradient">{{ $profile->name ?? 'Zefhana Ananda' }}</span><br>
-                    <span class="text-3xl md:text-4xl font-bold text-slate-300">{{ $profile->title ?? 'Full-Stack Developer' }}</span>
+                <h1 class="mt-6 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] text-white animate-slide-in-left">
+                    {{ $name }}
                 </h1>
 
-                <p class="text-lg text-slate-400 leading-relaxed mb-8 max-w-lg">
-                    {{ $profile->sub_title ?? 'Saya membangun aplikasi web yang skalabel, modern, dan berkesan — dari backend yang robust hingga UI yang elegan.' }}
+                <p class="mt-8 text-lg text-white/65 leading-relaxed max-w-xl animate-fade-in">
+                    {{ $profile->sub_title ?? 'Membangun aplikasi web menggunakan Laravel dan Tailwind CSS. Berfokus pada pengembangan aplikasi yang terstruktur, cepat, dan mudah digunakan.' }}
                 </p>
 
-                <div class="flex flex-wrap gap-4">
-                    <a href="{{ route('portfolio.projects') }}" class="btn-primary pulse-glow">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0l-7-7m7 7l-7 7"/></svg>
-                        Lihat Projects
+                <div class="mt-3 flex items-center gap-2.5 text-sm text-white/45 animate-fade-in">
+                    <span class="text-white/25">▸</span>
+                    Saat ini sedang eksplorasi Laravel 12, Filament v3, dan Docker
+                </div>
+
+                <div class="mt-9 flex flex-wrap gap-3 animate-fade-in">
+                    <a href="{{ route('portfolio.projects') }}" class="btn-primary">
+                        Lihat proyek
                     </a>
-                    <a href="{{ route('portfolio.contact') }}" class="btn-outline">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                        Hubungi Saya
+                    <a href="{{ route('portfolio.contact') }}" class="btn-secondary">
+                        Hubungi saya
                     </a>
                 </div>
 
-                <div class="flex gap-8 mt-12 pt-8 border-t border-white/10">
-                    <div>
-                        <div class="text-3xl font-black text-white">{{ $projectCount }}+</div>
-                        <div class="text-slate-500 text-sm">Projects</div>
+                <div class="mt-12 grid grid-cols-3 gap-3 w-full max-w-xl animate-fade-in">
+                    <div class="stats-card p-4">
+                        <div class="text-2xl sm:text-3xl font-bold text-white">{{ $projectCount }}</div>
+                        <div class="mt-1 text-sm text-white/40">proyek</div>
                     </div>
-                    <div>
-                        <div class="text-3xl font-black text-white">{{ $profile->years_of_experience_offset ?? 2 }}+</div>
-                        <div class="text-slate-500 text-sm">Tahun Belajar</div>
+                    <div class="stats-card p-4">
+                        <div class="text-2xl sm:text-3xl font-bold text-white">{{ $profile->years_of_experience_offset ?? 2 }}</div>
+                        <div class="mt-1 text-sm text-white/40">tahun belajar</div>
                     </div>
-                    <div>
-                        <div class="text-3xl font-black text-white">{{ $techStackCount }}+</div>
-                        <div class="text-slate-500 text-sm">Tech Stack</div>
+                    <div class="stats-card p-4">
+                        <div class="text-2xl sm:text-3xl font-bold text-white">{{ $techStackCount }}</div>
+                        <div class="mt-1 text-sm text-white/40">teknologi</div>
                     </div>
                 </div>
             </div>
 
-            {{-- Right: Avatar card --}}
-            <div class="hidden lg:flex justify-center items-center">
-                <div class="relative">
-                    {{-- Glow ring --}}
-                    <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 blur-2xl opacity-40 scale-110 float-animation"></div>
-                    {{-- Card --}}
-                    <div class="relative w-80 h-80 rounded-3xl glass overflow-hidden flex items-center justify-center float-animation"
-                         style="background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(168,85,247,.2))">
-                        <div class="text-center">
-                            @if($profile && $profile->avatar_path)
-                                <img src="{{ asset('storage/' . $profile->avatar_path) }}" alt="{{ $profile->name }}" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover shadow-xl">
-                            @else
-                                <div class="w-28 h-28 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 mx-auto mb-4 flex items-center justify-center text-white text-4xl font-black shadow-xl">
-                                    {{ $profile ? collect(explode(' ', $profile->name))->map(fn($n) => $n[0])->take(2)->implode('') : 'ZA' }}
-                                </div>
-                            @endif
-                            <p class="text-white font-bold text-lg">{{ $profile->name ?? 'Zefhana Ananda' }}</p>
-                            <p class="text-slate-300 text-sm mt-1">{{ $profile->title ?? 'Full-Stack Developer' }}</p>
+            <div class="lg:justify-self-end w-full max-w-sm animate-slide-in-right">
+                <div class="profile-card p-6 shadow-[0_20px_60px_rgba(0,0,0,.4)]">
+                    <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+                    <div class="flex items-center gap-4">
+                        @if($profile && $profile->avatar_path)
+                            <img src="{{ asset('storage/' . $profile->avatar_path) }}" alt="{{ $name }}" class="w-14 h-14 rounded-2xl object-cover border border-white/10">
+                        @else
+                            <div class="flex w-14 h-14 items-center justify-center rounded-2xl bg-indigo-600 text-base font-bold text-white shadow-lg shadow-indigo-950/50">
+                                {{ $profile ? collect(explode(' ', $profile->name))->map(fn($n) => $n[0])->take(2)->implode('') : 'ZA' }}
+                            </div>
+                        @endif
+                        <div>
+                            <h2 class="text-base font-semibold text-white">{{ $name }}</h2>
+                            <p class="text-sm text-white/45">{{ $title }}</p>
                         </div>
                     </div>
 
-                    {{-- Floating badges --}}
-                    <div class="absolute -top-4 -left-4 bg-white rounded-xl px-3 py-2 shadow-xl flex items-center gap-2 text-sm font-semibold text-slate-900">
-                        <span class="text-indigo-600">⚡</span> Laravel 12
-                    </div>
-                    <div class="absolute -bottom-4 -right-4 bg-white rounded-xl px-3 py-2 shadow-xl flex items-center gap-2 text-sm font-semibold text-slate-900">
-                        <span class="text-emerald-500">✓</span> Open to Work
+                    <div class="mt-5 space-y-2.5">
+                        <div class="rounded-xl border border-white/[0.06] bg-black/20 px-4 py-3">
+                            <div class="text-[10px] uppercase tracking-[0.18em] text-white/30">Universitas</div>
+                            <div class="mt-0.5 text-sm font-medium text-white">Esa Unggul</div>
+                        </div>
+                        <div class="rounded-xl border border-white/[0.06] bg-black/20 px-4 py-3">
+                            <div class="text-[10px] uppercase tracking-[0.18em] text-white/30">Status</div>
+                            <div class="mt-0.5 text-sm font-medium text-white">Mahasiswa TI, angkatan 2024</div>
+                        </div>
+                        <div class="rounded-xl border border-white/[0.06] bg-black/20 px-4 py-3">
+                            <div class="text-[10px] uppercase tracking-[0.18em] text-white/30">Lokasi</div>
+                            <div class="mt-0.5 text-sm font-medium text-white">{{ $profile->location ?? 'Indonesia' }}</div>
+                        </div>
+                        @if($profile->email)
+                        <div class="rounded-xl border border-white/[0.06] bg-black/20 px-4 py-3">
+                            <div class="text-[10px] uppercase tracking-[0.18em] text-white/30">Email</div>
+                            <a href="mailto:{{ $profile->email }}" class="mt-0.5 inline-block text-sm font-medium text-indigo-300 hover:text-indigo-200">{{ $profile->email }}</a>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    {{-- Scroll indicator --}}
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 animate-bounce">
-        <span class="text-xs tracking-widest uppercase">Scroll</span>
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
     </div>
 </section>
 
-{{-- ===== ABOUT SECTION ===== --}}
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            {{-- Left --}}
-            <div>
-                <div class="reveal">
-                    <span class="text-indigo-600 font-semibold text-sm uppercase tracking-widest">About Me</span>
-                    <h2 class="section-title mt-2">Tentang {{ $profile ? explode(' ', $profile->name)[0] : 'Zefhana' }}</h2>
-                </div>
-                <div class="reveal reveal-delay-1 space-y-4 text-slate-600 leading-relaxed html-content">
-                    {!! $profile->about_me ?? '' !!}
-                </div>
+{{-- ABOUT --}}
+<section class="py-20 border-t border-white/[0.08]">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12">
 
-                {{-- Experience timeline --}}
-                <div class="reveal reveal-delay-2 mt-8 space-y-4">
-                    @foreach($experiences as $exp)
-                    <div class="flex gap-4">
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 rounded-full bg-{{ $exp->color }}-100 text-{{ $exp->color }}-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
-                                {{ $exp->year }}
-                            </div>
-                            @if(!$loop->last)<div class="w-0.5 h-full bg-slate-100 mt-2"></div>@endif
-                        </div>
-                        <div class="pb-6">
-                            <h4 class="font-semibold text-slate-900">{{ $exp->title }}</h4>
-                            <p class="text-sm text-slate-500 mt-1">{{ $exp->description }}</p>
-                        </div>
-                    </div>
-                    @endforeach
+            <div>
+                <h2 class="section-title mb-4">Tentang saya</h2>
+                <div class="text-white/60 leading-relaxed space-y-4">
+                    {!! $profile->about_me ?? '<p>Saya belajar membangun aplikasi web dari nol — mulai dari database, backend, sampai tampilan yang bisa dipakai user. Sekarang fokus di Laravel dan Tailwind CSS.</p>' !!}
                 </div>
             </div>
 
-            {{-- Right: Skills --}}
-            <div>
-                <div class="reveal">
-                    <span class="text-indigo-600 font-semibold text-sm uppercase tracking-widest">Tech Stack</span>
-                    <h2 class="section-title mt-2">Keahlian</h2>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                    @foreach($skillGroups as $i => $group)
+            <div class="flex flex-col gap-6 mt-2 lg:mt-0 font-mono">
+                @foreach($skillGroups as $group)
                     @if($group['skills']->count() > 0)
-                    <div class="reveal reveal-delay-{{ $i + 1 }} bg-slate-50 rounded-2xl p-5 border border-slate-100 hover:border-{{ $group['color'] }}-200 hover:bg-{{ $group['color'] }}-50/50 transition-all duration-300">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="text-xl">{{ $group['icon'] }}</span>
-                            <h3 class="font-semibold text-slate-900">{{ $group['title'] }}</h3>
-                        </div>
-                        <div class="space-y-3">
-                            @foreach($group['skills'] as $skill)
-                            <div>
-                                <div class="flex justify-between text-sm mb-1.5">
-                                    <span class="text-slate-700 font-medium">{{ $skill->name }}</span>
-                                    <span class="text-slate-400">{{ $skill->level }}%</span>
-                                </div>
-                                <div class="h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-{{ $group['color'] }}-500 to-{{ $group['color'] }}-400 rounded-full"
-                                         style="width: {{ $skill->level }}%; transition: width 1s ease;"></div>
-                                </div>
+                        <div>
+                            <h3 class="text-[11px] font-semibold text-indigo-400/70 uppercase tracking-[0.2em] mb-2.5">{{ $group['title'] }}</h3>
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($group['skills'] as $skill)
+                                    <span class="px-2.5 py-1 text-xs text-white/55 bg-white/[0.02] border border-white/[0.06] rounded-md hover:bg-indigo-500/10 hover:text-indigo-300 hover:border-indigo-500/20 transition cursor-default">
+                                        {{ $skill->name }}
+                                    </span>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
-                    </div>
                     @endif
-                    @endforeach
-                </div>
-
-                {{-- Tech tags --}}
-                @if($skills->count() > 0)
-                <div class="reveal mt-6 flex flex-wrap gap-2">
-                    @foreach($skills->pluck('name') as $tag)
-                    <span class="bg-slate-100 text-slate-600 text-xs font-medium px-3 py-1.5 rounded-lg hover:bg-indigo-100 hover:text-indigo-700 transition-colors cursor-default">{{ $tag }}</span>
-                    @endforeach
-                </div>
-                @endif
+                @endforeach
             </div>
+
         </div>
+
     </div>
 </section>
 
-{{-- ===== FEATURED PROJECTS ===== --}}
-<section class="py-24 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-            <div class="reveal">
-                <span class="text-indigo-600 font-semibold text-sm uppercase tracking-widest">Work</span>
-                <h2 class="section-title mt-2 mb-0">Featured Projects</h2>
-            </div>
-            <a href="{{ route('portfolio.projects') }}" class="reveal text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 transition">
-                Lihat Semua
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+{{-- EXPERIENCES --}}
+@if($experiences->count() > 0)
+<section class="py-20 border-t border-white/[0.08]">
+    <div class="max-w-6xl mx-auto px-4">
+        <h2 class="section-title mb-8">Pengalaman belajar</h2>
+
+        <div class="space-y-3">
+            @foreach($experiences as $exp)
+                <div class="card-hover flex gap-4 p-5">
+                    <div class="text-sm font-semibold text-indigo-400 whitespace-nowrap">{{ $exp->year }}</div>
+                    <div>
+                        <h3 class="font-semibold text-white">{{ $exp->title }}</h3>
+                        <p class="mt-1 text-sm text-white/55">{{ $exp->description }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
+{{-- PROJECTS --}}
+<section class="py-20 border-t border-white/[0.08]">
+    <div class="max-w-6xl mx-auto px-4">
+
+        <div class="flex justify-between items-end mb-8">
+            <h2 class="section-title">Proyek pilihan</h2>
+            <a href="{{ route('portfolio.projects') }}" class="text-sm text-indigo-400 hover:text-indigo-300 transition">
+                Lihat semua →
             </a>
         </div>
 
-        @php
-        $statusColors = [
-            'completed'  => 'bg-emerald-100 text-emerald-700',
-            'in-progress'=> 'bg-blue-100 text-blue-700',
-            'planning'   => 'bg-amber-100 text-amber-700',
-            'on-hold'    => 'bg-red-100 text-red-700',
-        ];
-        $gradients = [
-            'from-indigo-500 to-purple-600',
-            'from-purple-500 to-pink-600',
-            'from-blue-500 to-indigo-600',
-        ];
-        @endphp
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            @forelse($featuredProjects as $i => $project)
-            <div class="reveal reveal-delay-{{ $i + 1 }} card group hover:-translate-y-2">
-                {{-- Image / Gradient --}}
-                <div class="h-52 bg-gradient-to-br {{ $gradients[$i % 3] }} relative overflow-hidden">
-                    @if($project->image)
-                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}"
-                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    @else
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="text-center text-white">
-                                <div class="text-5xl mb-2">💻</div>
-                                <p class="font-semibold text-sm opacity-80">{{ $project->title }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            @forelse($featuredProjects as $project)
+                @php $status = $statusConfig[$project->status] ?? ['label' => ucfirst($project->status), 'class' => 'text-white/50']; @endphp
+                <a href="{{ route('portfolio.project', $project) }}" class="group card-hover overflow-hidden block">
+                    <div class="relative h-40 bg-white/5 overflow-hidden">
+                        @if($project->image)
+                            <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}" class="project-card-image w-full h-full object-cover transition duration-500">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-950/25 to-purple-950/15">
+                                <span class="text-3xl font-bold text-white/10">{{ strtoupper(substr($project->title, 0, 1)) }}</span>
                             </div>
-                        </div>
-                        <div class="absolute inset-0 bg-black/10"></div>
-                    @endif
-                    {{-- Status badge --}}
-                    <div class="absolute top-4 left-4">
-                        <span class="badge {{ $statusColors[$project->status] ?? 'bg-slate-100 text-slate-700' }}">
-                            {{ ucfirst(str_replace('-', ' ', $project->status)) }}
-                        </span>
-                    </div>
-                    {{-- Featured star --}}
-                    <div class="absolute top-4 right-4 w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-sm shadow">⭐</div>
-                </div>
-
-                <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">{{ $project->title }}</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4">{{ Str::limit($project->description, 90) }}</p>
-
-                    {{-- Progress --}}
-                    <div class="mb-4">
-                        <div class="flex justify-between text-xs text-slate-500 mb-1.5">
-                            <span>Progress</span>
-                            <span class="font-semibold text-indigo-600">{{ $project->progress }}%</span>
-                        </div>
-                        <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
-                                 style="width:{{ $project->progress }}%"></div>
-                        </div>
-                    </div>
-
-                    {{-- Tech tags --}}
-                    <div class="flex flex-wrap gap-1.5 mb-5">
-                        @foreach(array_slice($project->technologies ?? [], 0, 3) as $tech)
-                        <span class="badge bg-slate-100 text-slate-600">{{ $tech }}</span>
-                        @endforeach
-                        @if(count($project->technologies ?? []) > 3)
-                        <span class="badge bg-slate-100 text-slate-400">+{{ count($project->technologies) - 3 }}</span>
                         @endif
                     </div>
 
-                    <a href="{{ route('portfolio.project', $project) }}"
-                       class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-semibold text-sm transition group/link">
-                        Lihat Detail
-                        <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-            </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <h3 class="font-semibold text-white group-hover:text-indigo-400 transition leading-snug">{{ $project->title }}</h3>
+                            <span class="text-xs {{ $status['class'] }} whitespace-nowrap">{{ $status['label'] }}</span>
+                        </div>
+                        <p class="text-sm text-white/55 leading-relaxed line-clamp-2">{{ $project->description }}</p>
+
+                        <div class="mt-4 flex flex-wrap gap-1.5">
+                            @foreach(array_slice($project->technologies ?? [], 0, 3) as $tech)
+                                <span class="text-xs text-white/40 bg-white/5 px-2 py-0.5 rounded">{{ $tech }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                </a>
             @empty
-            <div class="col-span-3 text-center py-16">
-                <div class="text-5xl mb-4">🚀</div>
-                <h3 class="text-xl font-semibold text-slate-900 mb-2">Belum Ada Project</h3>
-                <p class="text-slate-500">Projects akan ditampilkan di sini. Stay tuned!</p>
-            </div>
+                <div class="md:col-span-3 text-center py-12 card">
+                    <p class="text-white/50">Belum ada proyek yang ditampilkan.</p>
+                </div>
             @endforelse
         </div>
 
-        <div class="text-center mt-12 reveal">
-            <a href="{{ route('portfolio.projects') }}" class="btn-primary" style="background:linear-gradient(135deg,#4f46e5,#7c3aed);">
-                Lihat Semua Projects
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-        </div>
     </div>
 </section>
 
-{{-- ===== CTA SECTION ===== --}}
-<section class="py-24 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative overflow-hidden">
-    <div class="absolute inset-0" style="background-image:radial-gradient(rgba(255,255,255,.1) 1px,transparent 1px);background-size:24px 24px;"></div>
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="reveal">
-            <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Punya Ide Project?</h2>
-            <p class="text-xl text-indigo-100 mb-10 max-w-xl mx-auto">
-                Mari berkolaborasi dan wujudkan ide Anda menjadi produk digital yang luar biasa.
-            </p>
-            <a href="{{ route('portfolio.contact') }}" class="inline-flex items-center gap-3 bg-white text-indigo-600 font-bold px-8 py-4 rounded-2xl hover:bg-indigo-50 transition-all duration-300 shadow-2xl hover:-translate-y-1 text-lg">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                Let's Talk
-            </a>
-        </div>
+{{-- CONTACT CTA --}}
+<section class="py-20 border-t border-white/[0.08]">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+        <h2 class="section-title mb-3">Melihat kode sumber atau membahas proyek?</h2>
+        <p class="text-white/50 mb-8">Saya lebih sering aktif di GitHub dan LinkedIn. Jika Anda memiliki pertanyaan atau masukan, silakan kirimkan pesan.</p>
+        <a href="{{ route('portfolio.contact') }}" class="inline-flex items-center gap-2 px-5 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition">
+            Kontak saya
+        </a>
     </div>
 </section>
 

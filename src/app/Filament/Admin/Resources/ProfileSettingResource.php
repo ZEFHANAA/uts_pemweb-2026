@@ -61,6 +61,13 @@ class ProfileSettingResource extends Resource
                             ->disk('public')
                             ->columnSpanFull()
                             ->helperText('Upload foto profil Anda. Jika kosong, akan menggunakan inisial.'),
+                        Forms\Components\FileUpload::make('cv_path')
+                            ->label('File CV (PDF)')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->directory('cvs')
+                            ->disk('public')
+                            ->columnSpanFull()
+                            ->helperText('Upload file CV Anda dalam format PDF.'),
                     ]),
 
                 Forms\Components\Section::make('Tentang Saya')
