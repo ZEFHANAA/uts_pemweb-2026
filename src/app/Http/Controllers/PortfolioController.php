@@ -8,16 +8,37 @@ use App\Models\Skill;
 use App\Models\Experience;
 use App\Models\Faq;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PortfolioController extends Controller
 {
     /**
+     * Return the persisted profile or an in-memory fallback for fresh installs
+     * and isolated test databases. The fallback is never written to storage.
+     */
+    private function profile(): ProfileSetting
+    {
+        return ProfileSetting::first() ?? new ProfileSetting([
+            'name' => 'Zefhana',
+            'title' => 'Beginner Developer',
+            'sub_title' => 'Belajar dan membangun aplikasi web secara bertahap dengan fokus pada solusi yang terstruktur dan mudah digunakan.',
+            'about_me' => '<p>Saya seorang developer pemula dari Indonesia yang sedang mendalami Python, C++, dan pengembangan web.</p>',
+            'email' => 'azefhana@gmail.com',
+            'location' => 'Indonesia',
+            'github_url' => 'https://github.com/ZEFHANAA',
+            'linkedin_url' => 'https://www.linkedin.com/in/zefhana-a-576275307/',
+            'project_count_offset' => 0,
+            'years_of_experience_offset' => 0,
+            'tech_stack_count_offset' => 0,
+        ]);
+    }
+    /**
      * Show home/about page
      */
-    public function home()
+    public function home(): View
     {
         $featuredProjects = Project::featured()->ordered()->limit(3)->get();
-        $profile = ProfileSetting::first();
+        $profile = $this->profile();
         $skills = Skill::orderBy('order')->get();
         $experiences = Experience::orderBy('order')->get();
 
@@ -63,7 +84,7 @@ class PortfolioController extends Controller
     /**
      * Show all projects
      */
-    public function projects()
+    public function projects(): View
     {
         $projects = Project::ordered()->paginate(12);
         
@@ -75,7 +96,7 @@ class PortfolioController extends Controller
     /**
      * Show single project details
      */
-    public function projectDetail(Project $project)
+    public function projectDetail(Project $project): View
     {
         $relatedProjects = Project::where('id', '!=', $project->id)
             ->ordered()
@@ -91,9 +112,9 @@ class PortfolioController extends Controller
     /**
      * Show contact page
      */
-    public function contact()
+    public function contact(): View
     {
-        $profile = ProfileSetting::first();
+        $profile = $this->profile();
         $faqs = Faq::orderBy('order')->get();
 
         return view('portfolio.contact', [

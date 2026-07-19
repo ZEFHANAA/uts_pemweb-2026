@@ -52,7 +52,7 @@ DB_DATABASE="${PROJECT_NAME}"
 DB_USERNAME=root
 DB_PASSWORD="${DB_ROOT_PASSWORD:-REDACTED_DB_PASSWORD}"
 
-SESSION_DRIVER=file
+SESSION_DRIVER=database
 SESSION_LIFETIME=120
 SESSION_ENCRYPT=true
 SESSION_PATH=/
@@ -90,81 +90,8 @@ AWS_USE_PATH_STYLE_ENDPOINT=false
 VITE_APP_NAME="${APP_NAME}"
 EOF
 else
-  echo "📄 .env file already exists, overwriting with predefined environment variables..."
-
-  # Overwrite the existing .env file with the required values
-  cat <<EOF > /var/www/html/.env
-APP_NAME="${PROJECT_NAME}"
-APP_ENV=local
-APP_KEY=base64:REDACTED_APP_KEY=
-APP_DEBUG=true
-APP_TIMEZONE='Asia/Jakarta'
-APP_URL="https://profile.petawisata.my.id"
-ASSET_URL="https://profile.petawisata.my.id"
-DEBUGBAR_ENABLED=false
-ASSET_PREFIX=
-# ASSET_PREFIX=/dev/kit/public example in case deployed inside a folder
-
-APP_LOCALE=en
-APP_FALLBACK_LOCALE=en
-APP_FAKER_LOCALE=en_US
-
-APP_MAINTENANCE_DRIVER=file
-# APP_MAINTENANCE_STORE=database
-
-PHP_CLI_SERVER_WORKERS=4
-
-BCRYPT_ROUNDS=12
-
-LOG_CHANNEL=stack
-LOG_STACK=single
-LOG_DEPRECATIONS_CHANNEL=null
-LOG_LEVEL=debug
-
-DB_CONNECTION=mariadb
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE="${PROJECT_NAME}"
-DB_USERNAME=root
-DB_PASSWORD="${DB_ROOT_PASSWORD:-REDACTED_DB_PASSWORD}"
-
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-SESSION_ENCRYPT=true
-SESSION_PATH=/
-SESSION_DOMAIN=null
-
-BROADCAST_CONNECTION=log
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=database
-
-CACHE_STORE=file
-# CACHE_PREFIX=
-
-MEMCACHED_HOST=127.0.0.1
-
-REDIS_CLIENT=phpredis
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
-MAIL_MAILER=log
-MAIL_SCHEME=null
-MAIL_HOST=127.0.0.1
-MAIL_PORT=2525
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_FROM_ADDRESS="hello@example.com"
-MAIL_FROM_NAME="${APP_NAME}"
-
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=
-AWS_USE_PATH_STYLE_ENDPOINT=false
-
-VITE_APP_NAME="${APP_NAME}"
-EOF
+  echo "📄 .env file already exists, keeping existing config."
+  # ponytail: don't overwrite .env on restart — preserves user edits (was: hardcode template every boot)
 fi
 
 # Step 3: Wait for DB connection (host should match DB_HOST in .env)
@@ -196,10 +123,14 @@ if [ ! -d /var/www/html/vendor ]; then
   composer install --no-interaction --prefer-dist --optimize-autoloader
 fi
 
-# Step 5: Generate app key if not already present
-if [ ! -f /var/www/html/storage/oauth-private.key ]; then
-  echo "🔐 Generating Laravel app key..."
+# Step 5: Generate app key ONLY if .env has empty/missing APP_KEY
+# Was: if oauth-private.key missing → key:generate --force EVERY restart
+# That rotated APP_KEY, invalidated all session cookies → CSRF 419 flaky login.
+if ! grep -qE '^APP_KEY=base64:.+' /var/www/html/.env 2>/dev/null; then
+  echo "🔐 Generating Laravel app key (APP_KEY missing)..."
   php artisan key:generate --force
+else
+  echo "🔑 APP_KEY already set, keeping existing key."
 fi
 
 # Step 6: Create necessary folders and set permissions

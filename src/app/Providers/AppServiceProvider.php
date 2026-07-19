@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Policies\ActivityPolicy;
+use App\Auth\CustomSessionGuard;
 use Filament\Actions\MountableAction;
 use Filament\Notifications\Livewire\Notifications;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\VerticalAlignment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\ValidationException;
@@ -29,6 +31,28 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register custom session guard: skip migrate(true) on login so
+        // session ID + CSRF token stay stable across Livewire POST (fix 419).
+        Auth::extend('session-custom', function ($app, $name, array $config) {
+            $provider = Auth::createUserProvider($config['provider'] ?? null);
+
+            $guard = new CustomSessionGuard(
+                $name,
+                $provider,
+                $app['session.store'],
+                $app['request'],
+                $app['_timebox'] ?? new \Illuminate\Support\Timebox,
+                true
+            );
+
+            $guard->setCookieJar($app->make(\Illuminate\Contracts\Cookie\QueueingFactory::class));
+            $guard->setDispatcher($app->make(\Illuminate\Contracts\Events\Dispatcher::class));
+
+            return $guard;
+        });
+
+        \Illuminate\Support\Facades\URL::forceScheme('https');
+
         Gate::policy(Activity::class, ActivityPolicy::class);
         Page::formActionsAlignment(Alignment::Right);
         Notifications::alignment(Alignment::End);

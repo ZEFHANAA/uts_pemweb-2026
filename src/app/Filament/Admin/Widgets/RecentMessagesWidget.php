@@ -10,6 +10,8 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class RecentMessagesWidget extends BaseWidget
 {
+    protected static bool $isLazy = false;
+
     protected static ?int $sort = 3;
 
     protected int | string | array $columnSpan = 'full';

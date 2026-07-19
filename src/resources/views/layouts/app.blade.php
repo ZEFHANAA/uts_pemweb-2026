@@ -100,7 +100,12 @@
 
         {{-- MAIN --}}
         <main>
-            @yield('content')
+            {{-- Livewire full-page uses $slot; Blade @extends uses @yield('content') --}}
+            @isset($slot)
+                {{ $slot }}
+            @else
+                @yield('content')
+            @endisset
         </main>
 
         {{-- FOOTER --}}

@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ProjectsTableWidget extends BaseWidget
 {
+    protected static bool $isLazy = false;
+
     protected static ?int $sort = 2;
 
     protected int | string | array $columnSpan = 'full';
