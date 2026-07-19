@@ -56,6 +56,14 @@ class Project extends Model
     }
 
     /**
+     * Scope to get only published projects (hidden from public listing).
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
+    /**
      * Get projects sorted by order
      */
     public function scopeOrdered($query)

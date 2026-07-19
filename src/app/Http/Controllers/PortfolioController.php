@@ -37,7 +37,7 @@ class PortfolioController extends Controller
      */
     public function home(): View
     {
-        $featuredProjects = Project::featured()->ordered()->limit(3)->get();
+        $featuredProjects = Project::featured()->ordered()->published()->limit(3)->get();
         $profile = $this->profile();
         $skills = Skill::orderBy('order')->get();
         $experiences = Experience::orderBy('order')->get();
@@ -86,8 +86,8 @@ class PortfolioController extends Controller
      */
     public function projects(): View
     {
-        $projects = Project::ordered()->paginate(12);
-        
+        $projects = Project::ordered()->published()->paginate(12);
+
         return view('portfolio.projects', [
             'projects' => $projects,
         ]);
@@ -98,7 +98,10 @@ class PortfolioController extends Controller
      */
     public function projectDetail(Project $project): View
     {
+        abort_unless($project->is_published, 404);
+
         $relatedProjects = Project::where('id', '!=', $project->id)
+            ->published()
             ->ordered()
             ->limit(3)
             ->get();
