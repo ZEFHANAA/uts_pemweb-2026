@@ -52,6 +52,25 @@ Route::post('/admin/login', function (Request $request) {
 */
 
 // Portfolio Routes
+Route::get('/sitemap.xml', function () {
+    $projects = \App\Models\Project::where('is_published', true)->get();
+    $urls = [
+        url('/'),
+        url('/projects'),
+        url('/contact'),
+    ];
+    foreach ($projects as $p) {
+        $urls[] = url('/projects/' . $p->slug);
+    }
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+    foreach ($urls as $u) {
+        $xml .= '  <url><loc>' . htmlspecialchars($u) . '</loc><changefreq>weekly</changefreq></url>' . "\n";
+    }
+    $xml .= '</urlset>';
+    return response($xml, 200, ['Content-Type' => 'text/xml']);
+});
+
 Route::get('/', [PortfolioController::class, 'home'])->name('portfolio.home');
 Route::get('/projects', [PortfolioController::class, 'projects'])->name('portfolio.projects');
 Route::get('/projects/{project}', [PortfolioController::class, 'projectDetail'])->name('portfolio.project');

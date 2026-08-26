@@ -7,210 +7,69 @@
     body {
         @apply antialiased;
         font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-        background: #08090a;
+        background: #0a0a0a;
+        color: #f0f0f0;
+        line-height: 1.6;
     }
-    ::selection { background: rgba(99,102,241,.3); color: #fff; }
-    ::-webkit-scrollbar { width: 10px; height: 10px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 9999px; border: 2px solid #08090a; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
-    @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
-            animation-duration: 0.001ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.001ms !important;
-            scroll-behavior: auto !important;
-        }
-    }
+    ::selection { background: rgba(212,162,76,.35); color: #fff; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.25); }
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+}
+
+.marquee-container {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-content {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    gap: 1.5rem;
+    min-width: 100%;
+    animation: marquee 30s linear infinite;
+}
+
+.marquee-container:hover .marquee-content {
+    animation-play-state: paused;
 }
 
 @layer components {
+    /* Flat, bordered, no blur/glow — terminal-adjacent aesthetic */
     .nav-item {
-        @apply px-3.5 py-2 text-sm font-medium text-white/55 rounded-lg transition-colors duration-200 hover:text-white hover:bg-white/5;
+        @apply px-3 py-1.5 font-mono text-xs text-white/50 transition-colors duration-150 hover:text-white;
     }
     .nav-item.active {
-        @apply text-white bg-white/10;
-    }
-    .input-field {
-        @apply w-full px-4 py-3 bg-white/[0.04] border border-white/10 rounded-xl text-white placeholder-white/25
-               outline-none transition-all duration-200 focus:border-indigo-500/60 focus:bg-white/[0.06] focus:ring-2 focus:ring-indigo-500/10;
-    }
-    .section-label {
-        @apply text-xs font-semibold uppercase tracking-[0.2em] text-indigo-400;
-    }
-    .section-title {
-        @apply text-2xl sm:text-3xl font-semibold text-white tracking-tight;
-        letter-spacing: -0.04em;
+        @apply text-white;
     }
     .card {
-        @apply rounded-2xl border border-white/[0.08] bg-white/[0.025];
+        @apply rounded-sm border border-white/[0.1] bg-white/[0.02];
     }
     .card-hover {
-        @apply card transition-all duration-300 hover:border-indigo-400/20 hover:bg-white/[0.045];
+        @apply card transition-colors duration-200 hover:border-amber-500/40 hover:bg-white/[0.035];
     }
-    .html-content p { @apply text-white/65 leading-relaxed; }
-    .html-content h2 { @apply text-xl font-bold text-white mt-2; }
-    .html-content h3 { @apply text-lg font-bold text-white mt-2; }
-    .html-content ul { @apply list-disc pl-5 space-y-1 text-white/65; }
-    .html-content ol { @apply list-decimal pl-5 space-y-1 text-white/65; }
-    .html-content a  { @apply text-indigo-400 underline; }
-}
-
-/* Custom animations and styling */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+    .section-title {
+        @apply text-2xl sm:text-3xl font-bold text-white tracking-tight font-mono;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .btn-primary {
+        @apply inline-flex items-center gap-2 rounded-sm bg-white px-6 py-3 text-sm font-mono font-semibold text-black
+               transition-colors duration-150 hover:bg-amber-400;
     }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
+    .btn-secondary {
+        @apply inline-flex items-center gap-2 rounded-sm border border-white/20 bg-transparent px-6 py-3 text-sm font-mono font-semibold text-white
+               transition-colors duration-150 hover:border-white/40 hover:bg-white/5;
     }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-}
-
-.animate-slide-in-left {
-    animation: slideInLeft 0.6s ease-out forwards;
-}
-
-.animate-slide-in-right {
-    animation: slideInRight 0.6s ease-out forwards;
-}
-
-/* Hero section styling */
-.hero-gradient-bg {
-    background: radial-gradient(circle at top left, rgba(99,102,241,.15), transparent 40%),
-                radial-gradient(circle at 80% 20%, rgba(255,255,255,.04), transparent 30%);
-}
-
-/* Project card hover effect */
-.project-card-image {
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.group:hover .project-card-image {
-    transform: scale(1.05) rotate(1deg);
-}
-
-/* Button styling */
-.btn-primary {
-    @apply inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-[#08090a] 
-           shadow-[0_8px_30px_rgba(255,255,255,.06)] transition-all duration-300 
-           hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(255,255,255,.1)];
-}
-
-.btn-secondary {
-    @apply inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white 
-           transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10;
-}
-
-/* Skill bar animation */
-.skill-bar-fill {
-    transition: width 1.5s ease-out, opacity 0.5s ease-out;
-}
-
-/* Contact form styling */
-.contact-form-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* Mobile menu animation */
-#mobile-menu {
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    transform-origin: top;
-}
-
-#mobile-menu.hidden {
-    opacity: 0;
-    transform: scaleY(0.95);
-    pointer-events: none;
-}
-
-/* Stats card glow effect */
-.stats-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1rem;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.025);
-}
-
-.stats-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
-    pointer-events: none;
-}
-
-/* Profile card styling */
-.profile-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 24px;
-    background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 60px rgba(0,0,0,.4);
-}
-
-/* Timeline styling */
-.timeline-item {
-    position: relative;
-    padding-left: 24px;
-}
-
-.timeline-item::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 8px;
-    width: 8px;
-    height: 8px;
-    background: #6366f1;
-    border-radius: 50%;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .hero-section {
-        padding-top: 120px !important;
+    .input-field {
+        @apply w-full rounded-sm border border-white/15 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white font-mono
+               placeholder:text-white/25 focus:outline-none focus:border-amber-500/50 transition-colors;
     }
 }

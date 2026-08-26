@@ -12,3 +12,4 @@ src/node_modules/
 src/.env
 # SSL certificates (Cloudflare Origin)
 nginx/ssl/
+src/.env.bak.*

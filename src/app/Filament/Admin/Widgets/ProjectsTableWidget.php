@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Widgets;
 
 use App\Models\Project;
+use App\Filament\Admin\Resources\ProjectResource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -82,7 +83,9 @@ class ProjectsTableWidget extends BaseWidget
                     ->color('gray'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label('Edit'),
+                Tables\Actions\EditAction::make()
+                    ->label('Edit')
+                    ->url(fn (Project $record): string => ProjectResource::getUrl('edit', ['record' => $record])),
             ])
             ->defaultSort('order', 'asc')
             ->paginated([5, 10]);
