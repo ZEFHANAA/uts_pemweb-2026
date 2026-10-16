@@ -36,7 +36,7 @@ Website portofolio **full-stack dinamis** yang dibangun sebagai project UTS Pemr
 
 | Layer | Teknologi |
 |-------|-----------|
-| Backend | Laravel 12, PHP 8.2 |
+| Backend | Laravel 12, PHP 8.3 |
 | Frontend | Blade, Tailwind CSS, Vite |
 | Admin & Interactivity | Filament v3, **Livewire**, **Alpine.js** |
 | Database | MariaDB 10.11 |
@@ -55,23 +55,46 @@ Website portofolio **full-stack dinamis** yang dibangun sebagai project UTS Pemr
 ### Langkah
 
 ```bash
-# Masuk ke folder project
-cd /root/perkuliahan/uts_pemweb
+# 1. Clone & masuk ke folder project
+git clone https://github.com/ZEFHANAA/uts_pemweb-2026.git
+cd uts_pemweb-2026
 
-# Jalankan semua container
-docker compose up -d
+# 2. Siapkan environment Docker (file .env di root, di-gitignore)
+cat > .env <<'EOF'
+COMPOSE_PROJECT_NAME=uts_pemweb
+PROJECT_NAME=uts_pemweb
+DB_ROOT_PASSWORD=secret
+EOF
 
-# Cek status container
+# 3. Nginx butuh SSL cert (folder nginx/ssl/ di-gitignore)
+mkdir -p nginx/ssl
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout nginx/ssl/petawisata.my.id.key \
+  -out nginx/ssl/petawisata.my.id.crt \
+  -subj "/CN=petawisata.my.id"
+
+# 4. Network yang dipakai docker-compose (external)
+docker network create pemweb_net
+
+# 5. Jalankan semua container
+docker compose up -d --build
+
+# 6. Cek status
 docker compose ps
 ```
+
+> Pada boot pertama, container otomatis menyiapkan semuanya: generate `src/.env`
+> + `APP_KEY`, `composer install`, `migrate`, `storage:link`, lalu seed data awal
+> **sekali saja** (ditandai oleh file `src/storage/.seeded`). Boot berikutnya tidak
+> akan menimpa data yang sudah kamu isi lewat admin panel.
 
 ### Akses
 
 | Halaman | URL |
 |---------|-----|
-| Website | https://uts_pemweb.test |
-| Admin Panel | https://uts_pemweb.test/admin |
-| Database | localhost:13306 |
+| Website | http://localhost:8080 |
+| Admin Panel | http://localhost:8080/admin |
+| Database | localhost:13307 |
 
 ---
 
@@ -81,6 +104,8 @@ docker compose ps
 |--|--|
 | Email | `admin@admin.com` |
 | Password | `password` |
+
+> ⚠️ **Ganti password ini sebelum deploy.** Kredensial di atas hanya untuk development lokal.
 
 ---
 
@@ -121,8 +146,9 @@ uts_pemweb/
     ├── database/
     │   ├── migrations/
     │   └── seeders/
-    │       ├── ProjectSeeder.php
+    │       ├── RoleSeeder.php
     │       ├── UserSeeder.php
+    │       ├── ProjectSeeder.php
     │       ├── ProfileSettingSeeder.php
     │       ├── SkillSeeder.php
     │       ├── ExperienceSeeder.php
@@ -155,11 +181,30 @@ Admin      → Filament Resources (ProjectResource, ContactMessageResource,
 
 ```env
 APP_NAME="Portofolio Zefhana Ananda"
-APP_URL="https://uts_pemweb.test"
+APP_URL=http://localhost:8080
 DB_HOST=db
 DB_DATABASE=uts_pemweb
+DB_PASSWORD=secret
 FILESYSTEM_DISK=public
 ```
+
+---
+
+## 🗄️ Data & Reset Database
+
+Semua konten (profil, project, skill, pengalaman, FAQ) dikelola lewat Admin Panel
+dan tersimpan di MariaDB.
+
+- Migrasi biasa — **aman, tidak menghapus data**:
+  ```bash
+  docker exec uts_pemweb_php php artisan migrate
+  ```
+- **Reset total — ⚠️ menghapus SEMUA data** (termasuk pesan dari form kontak):
+  ```bash
+  docker exec uts_pemweb_php php artisan project:init
+  ```
+  Perintah ini menjalankan `migrate:fresh` lalu seed ulang dari kondisi nol.
+  Hanya pakai kalau memang ingin kembali ke kondisi awal.
 
 ---
 

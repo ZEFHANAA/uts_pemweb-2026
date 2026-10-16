@@ -22,6 +22,12 @@ class ProjectInitialize extends Command
 
     /**
      * Execute the console command.
+     *
+     * ⚠️ PERINGATAN: perintah ini memanggil `migrate:fresh`, artinya SEMUA tabel
+     * di-drop dan seluruh data hilang — termasuk konten yang diisi lewat admin
+     * panel dan pesan dari form kontak. Jangan dipanggil otomatis saat boot
+     * container (lihat php/docker-entrypoint.sh). Pakai `project:update` untuk
+     * migrasi biasa.
      */
     public function handle()
     {

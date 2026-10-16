@@ -20,11 +20,11 @@ if [ ! -f /var/www/html/.env ]; then
   cat <<EOF > /var/www/html/.env
 APP_NAME="${PROJECT_NAME}"
 APP_ENV=local
-APP_KEY=base64:REDACTED_APP_KEY=
+APP_KEY=
 APP_DEBUG=true
 APP_TIMEZONE='Asia/Jakarta'
-APP_URL="https://profile.petawisata.my.id"
-ASSET_URL="https://profile.petawisata.my.id"
+APP_URL="https://zefhana.test"
+ASSET_URL="https://zefhana.test"
 DEBUGBAR_ENABLED=false
 ASSET_PREFIX=
 # ASSET_PREFIX=/dev/kit/public example in case deployed inside a folder
@@ -143,9 +143,20 @@ chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 echo "🗃️ Running migrations..."
 php artisan migrate --force
 
-# Step 8: Run custom project init command
-echo "🚀 Running project:init..."
-php artisan project:init || true
+# Step 8: Seed ONLY on first boot.
+# NOTE: previously this ran `php artisan project:init`, which internally calls
+# `migrate:fresh` — dropping every table (admin-edited content AND contact
+# messages) on each container restart. Replaced with a first-boot guard so
+# data entered via the admin panel survives restarts.
+SEED_MARKER=/var/www/html/storage/.seeded
+if [ ! -f "$SEED_MARKER" ]; then
+  echo "🌱 First boot — generating permissions and seeding initial content..."
+  php artisan shield:generate --all --panel=admin || true
+  php artisan db:seed --force || true
+  touch "$SEED_MARKER"
+else
+  echo "✅ Already seeded — skipping seed (existing content preserved)."
+fi
 
 # Step 9: Create storage symbolic link
 echo "🔗 Creating storage link..."
