@@ -13,6 +13,13 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
+        // Guard: jangan seed ulang kalau sudah ada data.
+        // Mencegah duplikat saat `db:seed` dijalankan lebih dari sekali, dan
+        // tidak menimpa konten yang sudah diubah lewat admin panel.
+        if (Project::count() > 0) {
+            return;
+        }
+
         $projects = [
             [
                 'title' => 'Petawisata',

@@ -14,9 +14,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Kredensial admin bisa di-override lewat .env, supaya tidak ada
+        // password default yang ikut ter-deploy. Fallback = nilai development.
+        $adminEmail = env('ADMIN_EMAIL', 'admin@admin.com');
+        $adminPassword = env('ADMIN_PASSWORD', 'password');
+
         $user = User::firstOrCreate(
-            ['email' => 'admin@admin.com'],
-            ['name' => 'Super Admin', 'password' => Hash::make('password')]
+            ['email' => $adminEmail],
+            ['name' => 'Super Admin', 'password' => Hash::make($adminPassword)]
         );
         $user->assignRole('super_admin');
 

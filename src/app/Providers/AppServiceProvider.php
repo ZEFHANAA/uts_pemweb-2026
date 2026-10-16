@@ -51,7 +51,12 @@ class AppServiceProvider extends ServiceProvider
             return $guard;
         });
 
-        \Illuminate\Support\Facades\URL::forceScheme('https');
+        // Paksa HTTPS hanya kalau APP_URL memang https (mis. production).
+        // Kalau di-hardcode, link jadi https://localhost:8080 dan tidak bisa
+        // dibuka saat development lokal.
+        if (str_starts_with((string) config('app.url'), 'https://')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
 
         Gate::policy(Activity::class, ActivityPolicy::class);
         Page::formActionsAlignment(Alignment::Right);

@@ -8,7 +8,15 @@ use Illuminate\Database\Seeder;
 class ProfileSettingSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Seed profil awal.
+     *
+     * CATATAN:
+     * - Data kontak & sosial (email, phone, github_url, linkedin_url) sengaja
+     *   dikosongkan — isinya diatur lewat Admin Panel → Profil, supaya data
+     *   pribadi tidak ter-hardcode di repo publik.
+     * - firstOrCreate (bukan updateOrCreate) supaya re-seed TIDAK menimpa
+     *   data yang sudah diisi lewat admin panel.
+     * - Offset 0 → angka di halaman = jumlah data asli.
      */
     public function run(): void
     {
@@ -16,18 +24,23 @@ class ProfileSettingSeeder extends Seeder
             ['id' => 1],
             [
                 'name' => 'Zefhana Ananda',
-                'title' => 'Full-Stack Developer',
-                'sub_title' => 'Saya membangun aplikasi web yang skalabel, modern, dan berkesan — dari backend yang robust hingga UI yang elegan.',
-                'about_me' => '<p>Saya <strong class="text-slate-900">Zefhana Ananda</strong>, seorang mahasiswa yang sedang menempuh pendidikan dan passionate dalam dunia <strong class="text-slate-900">Full-Stack Web Development</strong>. Saya memiliki keahlian dalam membangun aplikasi web yang skalabel, modern, dan berdampak.</p><p>Dengan menguasai berbagai teknologi mulai dari backend (Laravel/PHP) hingga frontend (Vue.js, Tailwind CSS), saya menghadirkan solusi digital yang tidak hanya fungsional, tetapi juga indah secara visual.</p>',
+                'title' => 'Full-Stack Web Developer',
+                'sub_title' => 'Mahasiswa Teknik Informatika yang membangun aplikasi web dari backend sampai deploy.',
+                'about_me' => '<p>Saya <strong class="text-slate-900">Zefhana Ananda</strong>, mahasiswa Teknik Informatika yang senang membangun aplikasi web dari nol — mulai dari perancangan database, backend dengan Laravel, sampai antarmuka yang nyaman dipakai.</p><p>Saya mengerjakan semuanya sendiri, end to end: desain database, API, panel admin, sampai deploy dengan Docker dan Cloudflare. Beberapa aplikasi yang saya bangun sudah berjalan publik dan dipakai orang lain.</p>',
                 'avatar_path' => null,
-                'email' => 'zefhana@example.com',
-                'phone' => '+62 812 345 678',
+
+                // Kosong secara sengaja — diisi via Admin Panel, jangan hardcode.
+                'email' => null,
+                'phone' => null,
+                'github_url' => null,
+                'linkedin_url' => null,
+
                 'location' => 'Indonesia',
-                'github_url' => 'https://github.com',
-                'linkedin_url' => 'https://linkedin.com',
-                'project_count_offset' => 6,
-                'years_of_experience_offset' => 2,
-                'tech_stack_count_offset' => 10,
+
+                // 0 = tampilkan jumlah asli (lihat catatan di atas).
+                'project_count_offset' => 0,
+                'years_of_experience_offset' => 0,
+                'tech_stack_count_offset' => 0,
             ]
         );
     }
